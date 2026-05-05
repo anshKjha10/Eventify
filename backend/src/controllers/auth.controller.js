@@ -27,8 +27,10 @@ async function registerUser(req, res) {
             name,
             email,
             password: hashedPassword,
-            role
+            role: "user"
         })
+
+        await user.save();
 
         const token = jwt.sign(
             { id: user._id, role: user.role },
@@ -81,7 +83,7 @@ async function loginUser(req, res){
         }
 
         const token = jwt.sign({
-            id: user._id
+            id: user._id, role: user.role
         }, process.env.JWT_SECRET)
 
         res.cookie("token", token)
@@ -107,3 +109,5 @@ function logoutUser(req, res){
     });
 }
 
+
+module.exports = {registerUser, loginUser, logoutUser};
