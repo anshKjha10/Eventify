@@ -65,9 +65,96 @@ async function getAllEvents(req, res){
 async function getEventById(req, res){
     try{
 
-        
+        const eventID = req.params.id;
+        const event = await Event.findById(eventId);
+
+        if(!event){
+            return res.status(404).json({
+                message: "Event not found!",
+            });
+        }
+
+        return res.status(200).json({
+            message: "Event fetched successfully",
+            event
+        });
 
     } catch(err){
-
+        return res.status(500).json({
+            message: "Something went wrong",
+            error : err.message
+        });
     }
+}
+
+async function updateEvent(req, res){
+    try{
+        if(req.user.role !== "admin"){
+            return res.status(403).json({
+                message: "Only admin can update events."
+            })
+        }
+
+        const eventId = req.params.id;
+        const event = await Event.findByIdAndUpdate(
+            eventId,
+            req.body,
+            { new : true }
+        );
+
+        if(!event){
+            return res.status(404).json({
+                message: "Event not found!"
+            });
+        }
+
+        return res.status(200).json({
+            message: "Event updated successfully.",
+            event
+        });
+
+    } catch(err) {
+        return res.status(500).json({
+            message: "Something is wrong.",
+            error: err.message 
+        });
+    }
+}
+
+async function deleteEvent(req, res){
+    try{
+
+        if(req.user.role !== "admin"){
+            return res.status(403).json({
+                message: "Only admin can delete events."
+            });
+        }
+
+        const eventId = req.params.id;
+        const event = Event.findByIdAndDelete(eventId);
+
+        if(!event){
+            return res.status(404).json({
+                message: "Event not found"
+            });
+        }
+
+        return res.status(200).json({
+            message: "Event deleted successfully."
+        })
+
+    } catch(err) {
+        return res.status(500).json({
+            message: "Something went wrong.",
+            error: err.message
+        });
+    }
+}
+
+module.exports = {
+    createEvent,
+    getAllEvents,
+    getEventById,
+    updateEvent,
+    deleteEvent
 }
