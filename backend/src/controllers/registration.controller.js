@@ -98,6 +98,11 @@ async function getRegistrations(req, res){
 
         const registrations = await regModel.find({user: userId}).populate("event");
 
+        return res.status(200).json({
+            message: "Registrations fetched successfully!",
+            registrations
+        });
+
     } catch(err) {
         return res.status(500).json({
             message: "Internal server error",
