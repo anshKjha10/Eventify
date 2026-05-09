@@ -151,10 +151,33 @@ async function deleteEvent(req, res){
     }
 }
 
+async function getMyEvents(req, res){
+    try{
+
+        const events = await eventModel.find({
+            createdBy : req.user.id
+        }).sort({ createdAt : -1 });
+
+        return res.status(200).json({
+            message: "Your events fetched successfully!",
+            events
+        });
+
+    } catch(err) {
+
+        return res.status(500).json({
+            message: "Something went wrong",
+            error: err.message
+        });
+
+    }
+}
+
 module.exports = {
     createEvent,
     getAllEvents,
     getEventById,
     updateEvent,
-    deleteEvent
+    deleteEvent,
+    getMyEvents
 }
