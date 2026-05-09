@@ -106,10 +106,24 @@ async function getRegistrations(req, res){
     }
 }
 
-async function getRegistrationsByUser(req, res){
+async function getEventParticipants(req, res){
     try{
 
+        const eventId = req.params.eventId;
+        const userId = req.user.id;
 
+        if(req.user.role !== "admin"){
+            return res.status(403).json({
+                message: "Only admin can view participants!"
+            });
+        }
+
+        const participants = await regModel.find({event: eventId}).populate("user", "name email");
+
+        return res.status(200).json({
+            message: "Participants fetched successfully",
+            participants
+        });
 
     } catch(err) {
         return res.status(500).json({
@@ -118,3 +132,10 @@ async function getRegistrationsByUser(req, res){
         });
     }
 }
+
+module.exports = {
+    registerForEvent,
+    cancelRegistration,
+    getRegistrations,
+    getEventParticipants
+};
