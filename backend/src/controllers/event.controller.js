@@ -3,7 +3,7 @@ const eventModel = require('../models/event.model');
 // create event -> ADMIN only
 async function createEvent(req, res){
     try{
-        const {title, description, category, date, location, price, maxSeats} = req.body || {};
+        const {title, description, category, date, location, prize, maxSeats} = req.body || {};
 
         if(!title || !date || !location || !maxSeats){
             return res.status(200).json({
@@ -18,7 +18,7 @@ async function createEvent(req, res){
             })
         }
 
-        const event = new Event({
+        const event = new eventModel({
             title,
             description,
             category,
@@ -47,7 +47,7 @@ async function createEvent(req, res){
 async function getAllEvents(req, res){
     try{
 
-        const events = await Event.find().sort({date : 1});
+        const events = await eventModel.find().sort({date : 1});
 
         return res.status(200).json({
             message: "Events fetched successfully.",
@@ -65,8 +65,8 @@ async function getAllEvents(req, res){
 async function getEventById(req, res){
     try{
 
-        const eventID = req.params.id;
-        const event = await Event.findById(eventId);
+        const eventId = req.params.eventId;
+        const event = await eventModel.findById(eventId);
 
         if(!event){
             return res.status(404).json({
@@ -95,8 +95,8 @@ async function updateEvent(req, res){
             })
         }
 
-        const eventId = req.params.id;
-        const event = await Event.findByIdAndUpdate(
+        const eventId = req.params.eventId;
+        const event = await eventModel.findByIdAndUpdate(
             eventId,
             req.body,
             { new : true }
@@ -130,8 +130,8 @@ async function deleteEvent(req, res){
             });
         }
 
-        const eventId = req.params.id;
-        const event = Event.findByIdAndDelete(eventId);
+        const eventId = req.params.eventId;
+        const event = await eventModel.findByIdAndDelete(eventId);
 
         if(!event){
             return res.status(404).json({

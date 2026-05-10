@@ -41,7 +41,7 @@ const eventSchema = new mongoose.Schema({
         }
     },
 
-    price: {
+    prize: {
         type: Number,
         default: 0
     },
