@@ -1,0 +1,28 @@
+:root {
+  --body: 'Sora', 'Segoe UI', sans-serif;
+  --heading: 'Sora', 'Segoe UI', sans-serif;
+  color-scheme: light;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: var(--body);
+  background: #f7f7fb;
+}
+
+input,
+button {
+  font-family: inherit;
+}
+
+#root {
+  min-height: 100vh;
+}
