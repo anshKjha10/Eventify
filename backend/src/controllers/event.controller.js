@@ -65,7 +65,7 @@ async function getAllEvents(req, res){
 async function getEventById(req, res){
     try{
 
-        const eventId = req.params.eventId;
+        const eventId = req.params.id;
         const event = await eventModel.findById(eventId);
 
         if(!event){
@@ -95,7 +95,7 @@ async function updateEvent(req, res){
             })
         }
 
-        const eventId = req.params.eventId;
+        const eventId = req.params.id;
         const event = await eventModel.findByIdAndUpdate(
             eventId,
             req.body,
@@ -130,7 +130,7 @@ async function deleteEvent(req, res){
             });
         }
 
-        const eventId = req.params.eventId;
+        const eventId = req.params.id;
         const event = await eventModel.findByIdAndDelete(eventId);
 
         if(!event){

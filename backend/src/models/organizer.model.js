@@ -1,18 +1,18 @@
 const mongoose = require('mongoose');
 
-const userSchema = new mongoose.Schema({
+const organizerSchema = new mongoose.Schema({
     name: {
         type: String,
         required: true,
         trim: true
     },
-    
+
     email: {
         type: String,
         required: true,
         unique: true
     },
-    
+
     password: {
         type: String,
         required: true,
@@ -25,12 +25,31 @@ const userSchema = new mongoose.Schema({
         trim: true
     },
 
+    orgName: {
+        type: String,
+        required: true,
+        trim: true
+    },
+
+    website: {
+        type: String,
+        trim: true,
+        default: ''
+    },
+
+    gstNumber: {
+        type: String,
+        required: true,
+        trim: true,
+        uppercase: true
+    },
+
     role: {
         type: String,
-        default: 'user'
+        default: 'admin'
     }
 
 }, { timestamps: true });
 
-const user = mongoose.model('User', userSchema);
-module.exports = user;
+const Organizer = mongoose.model('Organizer', organizerSchema);
+module.exports = Organizer;
