@@ -15,11 +15,14 @@ export default function ParticipantList({ participants = [], loading = false }) 
       {participants.map((p, i) => (
         <div key={p._id || i} className="plist__item">
           <span className="plist__avatar" style={{ background: BG_COLORS[i % BG_COLORS.length] }}>
-            {getInitials(p.name || p.email || '?')}
+            {getInitials(p.user?.name || p.user?.email || p.name || p.email || '?')}
           </span>
           <div className="plist__info">
-            <span className="plist__name">{p.name || 'Unknown'}</span>
-            <span className="plist__email">{p.email}</span>
+            <span className="plist__name">{p.user?.name || p.name || 'Unknown'}</span>
+            <span className="plist__email">{p.user?.email || p.email}</span>
+            {(p.user?.phoneNumber || p.phoneNumber) && (
+              <span className="plist__phone">{p.user?.phoneNumber || p.phoneNumber}</span>
+            )}
           </div>
           <span className={`plist__status plist__status--${p.status || 'confirmed'}`}>
             {p.status || 'confirmed'}
@@ -42,6 +45,7 @@ export default function ParticipantList({ participants = [], loading = false }) 
         .plist__info { flex: 1; }
         .plist__name  { display: block; font-size: 14px; font-weight: 700; color: var(--clr-text); }
         .plist__email { display: block; font-size: 12px; color: var(--clr-text-muted); }
+        .plist__phone { display: block; font-size: 12px; color: var(--clr-text-muted); }
         .plist__status {
           font-size: 11px; font-weight: 700; padding: 3px 10px;
           border-radius: var(--radius-full); text-transform: capitalize;

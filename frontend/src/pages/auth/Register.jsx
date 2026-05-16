@@ -8,7 +8,7 @@ export default function Register() {
   const [form, setForm] = useState({
     name: '',
     email: '',
-    phone: '',
+    phoneNumber: '',
     password: '',
   })
 
@@ -61,11 +61,12 @@ export default function Register() {
           <div className="auth-field">
             <Phone size={18} color="var(--clr-text-muted)" />
             <input
-              name="phone"
+              name="phoneNumber"
               type="tel"
               placeholder="Phone number"
-              value={form.phone}
+              value={form.phoneNumber}
               onChange={handleChange}
+              required
             />
           </div>
 

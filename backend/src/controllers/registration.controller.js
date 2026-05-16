@@ -123,7 +123,7 @@ async function getEventParticipants(req, res){
             });
         }
 
-        const participants = await regModel.find({event: eventId}).populate("user", "name email");
+        const participants = await regModel.find({event: eventId}).populate("user", "name email phoneNumber");
 
         return res.status(200).json({
             message: "Participants fetched successfully",

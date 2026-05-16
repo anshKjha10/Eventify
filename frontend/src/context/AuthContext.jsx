@@ -3,7 +3,7 @@ import { createContext, useState, useCallback } from 'react'
 export const AuthContext = createContext(null)
 
 // Stub user — no API calls while backend is disconnected
-const STUB_USER = { name: 'Ashfak Sayem', email: 'ashfak@example.com', role: 'admin' }
+const STUB_USER = { name: 'Ashfak Sayem', email: 'ashfak@example.com', phoneNumber: '555-0100', role: 'admin' }
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(STUB_USER)
