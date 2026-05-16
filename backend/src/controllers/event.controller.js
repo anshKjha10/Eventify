@@ -3,10 +3,16 @@ const eventModel = require('../models/event.model');
 // create event -> ADMIN only
 async function createEvent(req, res){
     try{
-        const {title, description, category, date, location, prize, maxSeats} = req.body || {};
+        const { title, description, category, date, location, prize, maxSeats } = req.body || {};
 
-        if(!title || !date || !location || !maxSeats){
-            return res.status(200).json({
+        const hasLocation =
+            location &&
+            typeof location === "object" &&
+            location.city &&
+            location.country;
+
+        if (!title || !category || !date || !hasLocation || !maxSeats) {
+            return res.status(400).json({
                 message: "Required fields are missing"
             });
         }
@@ -26,8 +32,8 @@ async function createEvent(req, res){
             location,
             prize,
             maxSeats,
-            availableSeats : maxSeats,
-            createdBy : req.user.id
+            availableSeats: maxSeats,
+            createdBy: req.user.id
         });
 
         await event.save();
@@ -55,7 +61,7 @@ async function getAllEvents(req, res){
         });
 
     } catch(err){
-        return res.status(200).json({
+        return res.status(500).json({
             message: "Something went wrong",
             error: err.message
         });

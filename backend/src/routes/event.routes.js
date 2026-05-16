@@ -9,13 +9,13 @@ router.get("/", eventController.getAllEvents);
 
 router.get("/my-events", authMiddleware, adminMiddleware, eventController.getMyEvents); // this needs to be above ById otherwise /my-events is treated as /:eventId, it is admin only too
 
-router.get("/:eventId", eventController.getEventById);
+router.get("/:id", eventController.getEventById);
 
 // admin routes
 router.post("/create-event", authMiddleware, adminMiddleware, eventController.createEvent);
 
-router.put("/update-event/:eventId", authMiddleware, adminMiddleware, eventController.updateEvent);
+router.put("/update-event/:id", authMiddleware, adminMiddleware, eventController.updateEvent);
 
-router.delete("/delete-event/:eventId", authMiddleware, adminMiddleware, eventController.deleteEvent);
+router.delete("/delete-event/:id", authMiddleware, adminMiddleware, eventController.deleteEvent);
 
 module.exports = router;
