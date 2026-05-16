@@ -26,7 +26,7 @@ export default function Login() {
         </div>
 
         <h1 className="auth-title">Welcome back</h1>
-        <p className="auth-sub">Sign in to your account</p>
+        <p className="auth-sub">Sign in to your user account</p>
 
         <form className="auth-form" onSubmit={handleSubmit}>
           <div className="auth-field">
@@ -67,13 +67,13 @@ export default function Login() {
           </Link>
 
           <button type="submit" className="auth-submit-btn">
-            Sign In
+            Sign In as User
           </button>
         </form>
 
         <p className="auth-switch">
           Don&apos;t have an account?{' '}
-          <Link to="/auth/register">Sign up</Link>
+          <Link to="/auth/register">Register as a user</Link>
         </p>
       </div>
 

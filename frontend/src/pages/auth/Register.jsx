@@ -1,15 +1,20 @@
 import { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { User, Mail, Lock, Eye, EyeOff, Phone } from 'lucide-react'
 
 export default function Register() {
   const navigate = useNavigate()
+  const [searchParams] = useSearchParams()
+  const role = searchParams.get('role') === 'organizer' ? 'organizer' : 'user'
   const [showPassword, setShowPassword] = useState(false)
   const [form, setForm] = useState({
     name: '',
     email: '',
     phoneNumber: '',
     password: '',
+    orgName: '',
+    website: '',
+    gstNumber: '',
   })
 
   const handleChange = (e) => {
@@ -31,7 +36,9 @@ export default function Register() {
         </div>
 
         <h1 className="auth-title">Create account</h1>
-        <p className="auth-sub">Join thousands of event-goers</p>
+        <p className="auth-sub">
+          {role === 'organizer' ? 'Create your organizer account' : 'Create your user account'}
+        </p>
 
         <form className="auth-form" onSubmit={handleSubmit}>
           <div className="auth-field">
@@ -70,6 +77,45 @@ export default function Register() {
             />
           </div>
 
+          {role === 'organizer' && (
+            <>
+              <div className="auth-field">
+                <User size={18} color="var(--clr-text-muted)" />
+                <input
+                  name="orgName"
+                  type="text"
+                  placeholder="Organization name"
+                  value={form.orgName}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+
+              <div className="auth-field">
+                <Mail size={18} color="var(--clr-text-muted)" />
+                <input
+                  name="website"
+                  type="url"
+                  placeholder="Website (optional)"
+                  value={form.website}
+                  onChange={handleChange}
+                />
+              </div>
+
+              <div className="auth-field">
+                <Lock size={18} color="var(--clr-text-muted)" />
+                <input
+                  name="gstNumber"
+                  type="text"
+                  placeholder="GST number"
+                  value={form.gstNumber}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+            </>
+          )}
+
           <div className="auth-field">
             <Lock size={18} color="var(--clr-text-muted)" />
             <input
@@ -92,13 +138,26 @@ export default function Register() {
           </div>
 
           <button type="submit" className="auth-submit-btn">
-            Create Account
+            {role === 'organizer' ? 'Create Organizer Account' : 'Create User Account'}
           </button>
         </form>
 
         <p className="auth-switch">
           Already have an account?{' '}
           <Link to="/auth/login">Sign in</Link>
+        </p>
+        <p className="auth-switch">
+          {role === 'organizer' ? (
+            <>
+              Register as a user?{' '}
+              <Link to="/auth/register">Create user account</Link>
+            </>
+          ) : (
+            <>
+              Register as organizer?{' '}
+              <Link to="/auth/register?role=organizer">Create organizer account</Link>
+            </>
+          )}
         </p>
       </div>
 

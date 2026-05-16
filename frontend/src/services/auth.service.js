@@ -1,5 +1,4 @@
 
-
 export const authService = {
   login:    async (credentials) => ({ data: {} }),
   register: async (data)        => ({ data: {} }),
