@@ -128,6 +128,12 @@ input, textarea, select { font-family: var(--font-body); }
 .chip-sports { background: linear-gradient(135deg, #ff7b5e, #ff5c3c); }
 .chip-music  { background: linear-gradient(135deg, #ffb347, #ff8c00); }
 .chip-food   { background: linear-gradient(135deg, #3ad8a0, #1fb886); }
+.chip-comedy { background: linear-gradient(135deg, #a687ff, #8b68f0); }
+.chip-dance  { background: linear-gradient(135deg, #00cdef, #0099cc); }
+.chip-tech   { background: linear-gradient(135deg, #5b64ff, #3f47cc); }
+.chip-art    { background: linear-gradient(135deg, #ff7b5e, #ff5c3c); }
+.chip-film   { background: linear-gradient(135deg, #ffb347, #ff8c00); }
+.chip-theatre { background: linear-gradient(135deg, #3ad8a0, #1fb886); }
 
 /* ── Main content ──────────────────────────────────────────── */
 .content {

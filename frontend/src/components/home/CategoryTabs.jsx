@@ -1,9 +1,15 @@
-import { Dumbbell, Music, Utensils } from 'lucide-react'
+import { Dumbbell, Music, Utensils, Mic, Palette, Film, Theater, Computer, PersonStanding } from 'lucide-react'
 
 const TABS = [
   { label: 'Sports', icon: Dumbbell,  cls: 'chip-sports' },
   { label: 'Music',  icon: Music,     cls: 'chip-music'  },
   { label: 'Food',   icon: Utensils,  cls: 'chip-food'   },
+  { label: 'Comedy', icon: Mic,       cls: 'chip-comedy' },
+  { label: 'Dance',  icon: PersonStanding,   cls: 'chip-dance'},
+  { label: 'Tech',   icon: Computer,  cls: 'chip-tech'   },
+  { label: 'Art',    icon: Palette,   cls: 'chip-art'    },
+  { label: 'Film',   icon: Film,      cls: 'chip-film'   },
+  { label: 'Theatre', icon: Theater,  cls: 'chip-theatre'}
 ]
 
 /**
