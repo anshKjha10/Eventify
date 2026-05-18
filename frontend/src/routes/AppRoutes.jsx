@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import ProtectedRoute from '../components/common/ProtectedRoute'
 
-// Auth
 import Login    from '../pages/auth/Login'
 import Register from '../pages/auth/Register'
 
@@ -30,18 +30,81 @@ export default function AppRoutes() {
         <Route path="/auth/register" element={<Register />} />
         <Route path="/unauthorized"  element={<Unauthorized />} />
 
-        {/* User */}
-        <Route path="/"                 element={<Home />} />
-        <Route path="/events/:id"       element={<EventDetails />} />
-        <Route path="/my-registrations" element={<MyRegistrations />} />
-        <Route path="/profile"          element={<Profile />} />
+        {/* User (protected) */}
+        <Route
+          path="/"
+          element={
+            <ProtectedRoute redirectTo="/auth/register">
+              <Home />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/events/:id"
+          element={
+            <ProtectedRoute redirectTo="/auth/register">
+              <EventDetails />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/my-registrations"
+          element={
+            <ProtectedRoute redirectTo="/auth/register">
+              <MyRegistrations />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/profile"
+          element={
+            <ProtectedRoute redirectTo="/auth/register">
+              <Profile />
+            </ProtectedRoute>
+          }
+        />
 
-        {/* Admin */}
-        <Route path="/admin/dashboard"               element={<AdminDashboard />} />
-        <Route path="/admin/events"                  element={<ManageEvents />} />
-        <Route path="/admin/events/create"           element={<CreateEvent />} />
-        <Route path="/admin/events/:id/edit"         element={<EditEvent />} />
-        <Route path="/admin/events/:id/participants" element={<Participants />} />
+        {/* Admin (protected) */}
+        <Route
+          path="/admin/dashboard"
+          element={
+            <ProtectedRoute redirectTo="/auth/register">
+              <AdminDashboard />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/events"
+          element={
+            <ProtectedRoute redirectTo="/auth/register">
+              <ManageEvents />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/events/create"
+          element={
+            <ProtectedRoute redirectTo="/auth/register">
+              <CreateEvent />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/events/:id/edit"
+          element={
+            <ProtectedRoute redirectTo="/auth/register">
+              <EditEvent />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/events/:id/participants"
+          element={
+            <ProtectedRoute redirectTo="/auth/register">
+              <Participants />
+            </ProtectedRoute>
+          }
+        />
 
         {/* Catch-all */}
         <Route path="*" element={<NotFound />} />

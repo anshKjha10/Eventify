@@ -1,19 +1,47 @@
-import { createContext, useState, useCallback } from 'react'
+import { createContext, useState, useCallback } from 'react';
+import { authService } from '../services/auth.service';
 
 export const AuthContext = createContext(null)
 
-// Stub user — no API calls while backend is disconnected
-const STUB_USER = { name: 'Ashfak Sayem', email: 'ashfak@example.com', phoneNumber: '555-0100', role: 'admin' }
 
 export function AuthProvider({ children }) {
-  const [user, setUser] = useState(STUB_USER)
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(false);
 
-  const login    = useCallback(async () => user,    [user])
-  const register = useCallback(async () => user,    [user])
-  const logout   = useCallback(async () => setUser(null), [])
+  const login = useCallback(async (credentials) => {
+    setLoading(true);
+    try {
+      const response = await authService.login(credentials);
+      setUser(response.data.user);
+      return response.data;
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  const register = useCallback(async (data) => {
+    setLoading(true);
+    try {
+      const response = await authService.register(data);
+      setUser(response.data.user);
+      return response.data;
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  const logout = useCallback(async () => {
+    setLoading(true);
+    try {
+      await authService.logout();
+      setUser(null);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
 
   return (
-    <AuthContext.Provider value={{ user, loading: false, login, register, logout }}>
+    <AuthContext.Provider value={{ user, loading, login, register, logout }}>
       {children}
     </AuthContext.Provider>
   )

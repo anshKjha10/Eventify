@@ -1,9 +1,11 @@
 import { useState } from 'react'
+import { useAuth } from '../../hooks/useAuth'
 import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { User, Mail, Lock, Eye, EyeOff, Phone } from 'lucide-react'
 
 export default function Register() {
   const navigate = useNavigate()
+  const { register } = useAuth()
   const [searchParams] = useSearchParams()
   const role = searchParams.get('role') === 'organizer' ? 'organizer' : 'user'
   const [showPassword, setShowPassword] = useState(false)
@@ -21,11 +23,24 @@ export default function Register() {
     setForm({ ...form, [e.target.name]: e.target.value })
   }
 
-  const handleSubmit = (e) => {
-    e.preventDefault()
-    // TODO: connect to auth API
-    navigate('/')
+  const handleSubmit = async (e) => {
+  e.preventDefault();
+
+  const payload = {
+    name: form.name,
+    email: form.email,
+    phoneNumber: form.phoneNumber,
+    password: form.password,
+  };
+
+  try {
+    await register(payload);
+    navigate('/');
+  } catch (err) {
+    console.error('Register failed:', err);
+    alert(err?.response?.data?.message || 'Registration failed');
   }
+};
 
   return (
     <div className="auth-page">

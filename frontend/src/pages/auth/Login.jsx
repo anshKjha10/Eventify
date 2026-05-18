@@ -1,8 +1,10 @@
 import { useState } from 'react'
+import { useAuth } from '../../hooks/useAuth'
 import { Link, useNavigate } from 'react-router-dom'
 import { Mail, Lock, Eye, EyeOff } from 'lucide-react'
 
 export default function Login() {
+  const { login } = useAuth()
   const navigate = useNavigate()
   const [showPassword, setShowPassword] = useState(false)
   const [form, setForm] = useState({ email: '', password: '' })
@@ -11,10 +13,10 @@ export default function Login() {
     setForm({ ...form, [e.target.name]: e.target.value })
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    // TODO: connect to auth API
-    navigate('/')
+    await login({ email: form.email, password: form.password });
+    navigate('/');
   }
 
   return (
