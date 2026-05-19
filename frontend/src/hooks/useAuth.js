@@ -4,7 +4,7 @@ import { AuthContext } from '../context/AuthContext'
 /**
  * Custom hook to access auth context.
  *
- * @returns {{ user, loading, login, register, logout }}
+ * @returns {{ user, loading, login, register, registerOrganizer, logout }}
  */
 export function useAuth() {
   const ctx = useContext(AuthContext)

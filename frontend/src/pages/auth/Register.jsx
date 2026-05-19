@@ -5,7 +5,7 @@ import { User, Mail, Lock, Eye, EyeOff, Phone } from 'lucide-react'
 
 export default function Register() {
   const navigate = useNavigate()
-  const { register } = useAuth()
+  const { register, registerOrganizer } = useAuth()
   const [searchParams] = useSearchParams()
   const role = searchParams.get('role') === 'organizer' ? 'organizer' : 'user'
   const [showPassword, setShowPassword] = useState(false)
@@ -26,15 +26,27 @@ export default function Register() {
   const handleSubmit = async (e) => {
   e.preventDefault();
 
-  const payload = {
-    name: form.name,
-    email: form.email,
-    phoneNumber: form.phoneNumber,
-    password: form.password,
-  };
-
   try {
-    await register(payload);
+    if (role === 'organizer') {
+      const payload = {
+        name: form.name,
+        email: form.email,
+        phoneNumber: form.phoneNumber,
+        password: form.password,
+        orgName: form.orgName,
+        website: form.website,
+        gstNumber: form.gstNumber,
+      };
+      await registerOrganizer(payload);
+    } else {
+      const payload = {
+        name: form.name,
+        email: form.email,
+        phoneNumber: form.phoneNumber,
+        password: form.password,
+      };
+      await register(payload);
+    }
     navigate('/');
   } catch (err) {
     console.error('Register failed:', err);

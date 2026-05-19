@@ -1,4 +1,5 @@
 const userModel = require('../models/user.model');
+const organizerModel = require('../models/organizer.model');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
@@ -76,11 +77,16 @@ async function loginUser(req, res) {
 
         }
 
-        const user = await userModel.findOne({
-            email
-        });
+        // Check User collection first, then fall back to Organizer collection
+        let account = await userModel.findOne({ email });
+        let isOrganizer = false;
 
-        if (!user) {
+        if (!account) {
+            account = await organizerModel.findOne({ email });
+            isOrganizer = true;
+        }
+
+        if (!account) {
 
             return res.status(400).json({
                 message: "Invalid email or password!"
@@ -90,7 +96,7 @@ async function loginUser(req, res) {
 
         const isPasswordValid = await bcrypt.compare(
             password,
-            user.password
+            account.password
         );
 
         if (!isPasswordValid) {
@@ -102,17 +108,21 @@ async function loginUser(req, res) {
         }
 
         const token = jwt.sign({
-            id: user._id,
-            role: user.role
+            id: account._id,
+            role: account.role
         }, process.env.JWT_SECRET);
 
         res.cookie("token", token);
 
         return res.status(200).json({
-            message: "User logged in successfully",
+            message: `${isOrganizer ? 'Organizer' : 'User'} logged in successfully`,
             user: {
-                _id: user._id,
-                email: user.email,
+                _id: account._id,
+                name: account.name,
+                email: account.email,
+                phoneNumber: account.phoneNumber,
+                ...(isOrganizer && { orgName: account.orgName }),
+                role: account.role,
             }
         });
 

@@ -30,6 +30,17 @@ export function AuthProvider({ children }) {
     }
   }, []);
 
+  const registerOrganizer = useCallback(async (data) => {
+    setLoading(true);
+    try {
+      const response = await authService.registerOrganizer(data);
+      setUser(response.data.user);
+      return response.data;
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
   const logout = useCallback(async () => {
     setLoading(true);
     try {
@@ -41,7 +52,7 @@ export function AuthProvider({ children }) {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user, loading, login, register, logout }}>
+    <AuthContext.Provider value={{ user, loading, login, register, registerOrganizer, logout }}>
       {children}
     </AuthContext.Provider>
   )

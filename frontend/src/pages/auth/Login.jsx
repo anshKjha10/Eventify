@@ -7,6 +7,7 @@ export default function Login() {
   const { login } = useAuth()
   const navigate = useNavigate()
   const [showPassword, setShowPassword] = useState(false)
+  const [error, setError] = useState('')
   const [form, setForm] = useState({ email: '', password: '' })
 
   const handleChange = (e) => {
@@ -15,8 +16,13 @@ export default function Login() {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    await login({ email: form.email, password: form.password });
-    navigate('/');
+    setError('')
+    try {
+      await login({ email: form.email, password: form.password });
+      navigate('/');
+    } catch (err) {
+      setError(err?.response?.data?.message || 'Login failed. Please try again.')
+    }
   }
 
   return (
@@ -28,7 +34,7 @@ export default function Login() {
         </div>
 
         <h1 className="auth-title">Welcome back</h1>
-        <p className="auth-sub">Sign in to your user account</p>
+        <p className="auth-sub">Sign in to your account</p>
 
         <form className="auth-form" onSubmit={handleSubmit}>
           <div className="auth-field">
@@ -68,8 +74,14 @@ export default function Login() {
             Forgot password?
           </Link>
 
+          {error && (
+            <p style={{ color: '#e05c7e', fontSize: 13, fontWeight: 600, textAlign: 'center', margin: '-4px 0' }}>
+              {error}
+            </p>
+          )}
+
           <button type="submit" className="auth-submit-btn">
-            Sign In as User
+            Sign In
           </button>
         </form>
 
