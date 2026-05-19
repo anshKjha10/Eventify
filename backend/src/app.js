@@ -1,3 +1,4 @@
+const path = require("path");
 const express = require("express");
 const cookieParser = require("cookie-parser");
 const authRoutes = require("./routes/auth.routes");
@@ -14,6 +15,9 @@ app.use(cors({
 
 app.use(express.json());  // body parser middleware
 app.use(cookieParser());  // cookie parser middleware
+
+// Serve uploaded images as static files → accessible at /uploads/<filename>
+app.use('/uploads', express.static(path.join(__dirname, '..', 'uploads')));
 
 app.get("/", (req, res) => {
     res.send("Welcome to Eventify API.");

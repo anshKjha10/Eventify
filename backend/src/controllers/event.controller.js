@@ -4,12 +4,21 @@ const eventModel = require('../models/event.model');
 async function createEvent(req, res){
     try{
         const { title, description, category, date, location, prize, maxSeats } = req.body || {};
+        let parsedLocation = location;
+
+        if (typeof location === "string") {
+            try {
+                parsedLocation = JSON.parse(location);
+            } catch (err) {
+                parsedLocation = location;
+            }
+        }
 
         const hasLocation =
-            location &&
-            typeof location === "object" &&
-            location.city &&
-            location.country;
+            parsedLocation &&
+            typeof parsedLocation === "object" &&
+            parsedLocation.city &&
+            parsedLocation.country;
 
         if (!title || !category || !date || !hasLocation || !maxSeats) {
             return res.status(400).json({
@@ -29,10 +38,11 @@ async function createEvent(req, res){
             description,
             category,
             date,
-            location,
+            location: parsedLocation,
             prize,
             maxSeats,
             availableSeats: maxSeats,
+            image: req.file ? `/uploads/${req.file.filename}` : undefined,
             createdBy: req.user.id
         });
 
@@ -102,9 +112,23 @@ async function updateEvent(req, res){
         }
 
         const eventId = req.params.id;
+        const updateData = { ...req.body };
+
+        if (typeof updateData.location === "string") {
+            try {
+                updateData.location = JSON.parse(updateData.location);
+            } catch (err) {
+                // keep original value if parsing fails
+            }
+        }
+
+        if (req.file) {
+            updateData.image = `/uploads/${req.file.filename}`;
+        }
+
         const event = await eventModel.findByIdAndUpdate(
             eventId,
-            req.body,
+            updateData,
             { new : true }
         );
 
