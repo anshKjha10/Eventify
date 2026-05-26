@@ -4,10 +4,7 @@ import Button from '../common/Button'
 import { eventService } from '../../services/event.service'
 import { EVENT_CATEGORIES } from '../../utils/constants'
 
-/**
- * CreateEventModal — modal form for creating a new event.
- * Props: open, onClose, onCreated
- */
+
 export default function CreateEventModal({ open, onClose, onCreated }) {
   const [form, setForm]       = useState({ title: '', category: '', date: '', location: '', price: '', description: '' })
   const [loading, setLoading] = useState(false)

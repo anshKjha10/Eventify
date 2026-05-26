@@ -30,9 +30,10 @@ export const eventService = {
     Object.entries(data).forEach(([k, v]) => {
       if (k === 'image' && v instanceof File) { fd.append('image', v); return; }
       if (['city', 'country', 'address'].includes(k)) return; // handled below
-      fd.append(k, v ?? '');
+      if (v === undefined || v === null || v === '') return;
+      fd.append(k, v);
     });
-    if (data.city || data.country) {
+    if (data.city || data.country || data.address) {
       fd.append('location', JSON.stringify({
         city:    data.city    || '',
         country: data.country || '',

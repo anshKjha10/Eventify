@@ -112,25 +112,61 @@ async function updateEvent(req, res){
         }
 
         const eventId = req.params.id;
-        const updateData = { ...req.body };
+        const allowedFields = [
+            "title",
+            "description",
+            "category",
+            "date",
+            "location",
+            "prize",
+            "maxSeats"
+        ];
 
-        if (typeof updateData.location === "string") {
+        const updateOps = { $set: {} };
+
+        for (const field of allowedFields) {
+            if (Object.prototype.hasOwnProperty.call(req.body, field)) {
+                const value = req.body[field];
+                if (value !== undefined && value !== "") {
+                    updateOps.$set[field] = value;
+                }
+            }
+        }
+
+        if (typeof updateOps.$set.location === "string") {
             try {
-                updateData.location = JSON.parse(updateData.location);
+                updateOps.$set.location = JSON.parse(updateOps.$set.location);
             } catch (err) {
-                // keep original value if parsing fails
+                delete updateOps.$set.location;
+            }
+        }
+
+        if (updateOps.$set.location && typeof updateOps.$set.location === "object") {
+            const { city, country, address } = updateOps.$set.location;
+            delete updateOps.$set.location;
+
+            if (city !== undefined && city !== "") {
+                updateOps.$set["location.city"] = city;
+            }
+            if (country !== undefined && country !== "") {
+                updateOps.$set["location.country"] = country;
+            }
+            if (address !== undefined && address !== "") {
+                updateOps.$set["location.address"] = address;
             }
         }
 
         if (req.file) {
-            updateData.image = `/uploads/${req.file.filename}`;
+            updateOps.$set.image = `/uploads/${req.file.filename}`;
         }
 
-        const event = await eventModel.findByIdAndUpdate(
-            eventId,
-            updateData,
-            { new : true }
-        );
+        if (Object.keys(updateOps.$set).length === 0) {
+            return res.status(400).json({
+                message: "No valid fields provided to update."
+            });
+        }
+
+        const event = await eventModel.findByIdAndUpdate(eventId, updateOps, { new : true });
 
         if(!event){
             return res.status(404).json({

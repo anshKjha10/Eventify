@@ -49,6 +49,7 @@ async function registerUser(req, res) {
                 name: user.name,
                 email: user.email,
                 phoneNumber: user.phoneNumber,
+                avatar: user.avatar,
                 role: user.role
             }
         });
@@ -121,6 +122,7 @@ async function loginUser(req, res) {
                 name: account.name,
                 email: account.email,
                 phoneNumber: account.phoneNumber,
+                avatar: account.avatar,
                 ...(isOrganizer && { orgName: account.orgName }),
                 role: account.role,
             }
@@ -146,8 +148,49 @@ function logoutUser(req, res) {
 
 }
 
+async function updateProfilePhoto(req, res) {
+    try {
+        if (!req.file) {
+            return res.status(400).json({ message: "Profile image is required." });
+        }
+
+        const avatarPath = `/uploads/${req.file.filename}`;
+        const isOrganizer = req.user.role === 'admin';
+        const model = isOrganizer ? organizerModel : userModel;
+
+        const account = await model.findByIdAndUpdate(
+            req.user.id,
+            { avatar: avatarPath },
+            { new: true }
+        );
+
+        if (!account) {
+            return res.status(404).json({ message: "Account not found." });
+        }
+
+        return res.status(200).json({
+            message: "Profile photo updated successfully",
+            user: {
+                _id: account._id,
+                name: account.name,
+                email: account.email,
+                phoneNumber: account.phoneNumber,
+                avatar: account.avatar,
+                ...(isOrganizer && { orgName: account.orgName }),
+                role: account.role,
+            }
+        });
+    } catch (err) {
+        return res.status(500).json({
+            message: "Something went wrong",
+            error: err.message
+        });
+    }
+}
+
 module.exports = {
     registerUser,
     loginUser,
-    logoutUser
+    logoutUser,
+    updateProfilePhoto
 };

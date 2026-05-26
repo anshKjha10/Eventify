@@ -1,6 +1,6 @@
 import { useNavigate, useParams } from 'react-router-dom'
 import { ArrowLeft, MapPin, Calendar, Clock, Users, Bookmark, Share2 } from 'lucide-react'
-import { formatDate, formatTime, formatPrice } from '../../utils/helpers'
+import { formatDate, formatLocation, formatTime, formatPrice, getImageUrl } from '../../utils/helpers'
 import Button from '../../components/common/Button'
 
 export default function EventDetails() {
@@ -29,7 +29,7 @@ export default function EventDetails() {
           <button className="ed-icon-btn"><Bookmark size={18} color="#fff" /></button>
           <button className="ed-icon-btn"><Share2 size={18} color="#fff" /></button>
         </div>
-        {event.image && <img src={event.image} alt={event.title} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', zIndex: -1 }} />}
+        {event.image && <img src={getImageUrl(event.image)} alt={event.title} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', zIndex: -1 }} />}
       </div>
 
       <div className="ed-content">
@@ -42,7 +42,7 @@ export default function EventDetails() {
         <div className="ed-info-list">
           <div className="ed-info-item"><Calendar size={16} color="var(--clr-primary)" /><span>{formatDate(event.date)}</span></div>
           <div className="ed-info-item"><Clock    size={16} color="var(--clr-primary)" /><span>{formatTime(event.date)}</span></div>
-          <div className="ed-info-item"><MapPin   size={16} color="var(--clr-primary)" /><span>{event.location}</span></div>
+          <div className="ed-info-item"><MapPin   size={16} color="var(--clr-primary)" /><span>{formatLocation(event.location)}</span></div>
           <div className="ed-info-item"><Users    size={16} color="var(--clr-primary)" /><span>+{event.attendees?.length ?? 0} going</span></div>
         </div>
 

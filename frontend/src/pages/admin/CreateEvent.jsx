@@ -133,9 +133,8 @@ export default function CreateEvent() {
                   style={{ ...inputStyle, resize: 'vertical' }} placeholder="Describe your event…" />
               </div>
 
-              {/* Image Upload — full width */}
               <div style={{ gridColumn: '1/-1', display: 'flex', flexDirection: 'column' }}>
-                <label style={labelStyle}>Event Banner / Image<span style={{ color: 'var(--clr-danger)' }}> *</span></label>
+                <label style={labelStyle}>Event Banner / Image (Landscape Preferred)<span style={{ color: 'var(--clr-danger)' }}> *</span></label>
                 <input ref={fileRef} type="file" accept="image/*" onChange={handleImageChange} style={{ display: 'none' }} />
 
                 {imagePreview ? (

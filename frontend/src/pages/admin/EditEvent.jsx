@@ -1,22 +1,31 @@
 import { useState, useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import AdminSidebar    from '../../components/admin/AdminSidebar'
+import AdminSidebar from '../../components/admin/AdminSidebar'
 import { eventService } from '../../services/event.service'
 import { EVENT_CATEGORIES } from '../../utils/constants'
 import Button from '../../components/common/Button'
 import Loader from '../../components/common/Loader'
 
 export default function EditEvent() {
-  const { id }   = useParams()
+  const { id } = useParams()
   const navigate = useNavigate()
-  const [form, setForm]       = useState({})
+  const [form, setForm] = useState({})
   const [loading, setLoading] = useState(true)
-  const [saving, setSaving]   = useState(false)
-  const [error, setError]     = useState('')
+  const [saving, setSaving] = useState(false)
+  const [error, setError] = useState('')
 
   useEffect(() => {
     eventService.getById(id)
-      .then(({ data }) => setForm({ ...data.event, date: data.event.date?.slice(0, 16) || '' }))
+      .then(({ data }) => {
+        const ev = data.event;
+        setForm({
+          ...ev,
+          date: ev.date?.slice(0, 16) || '',
+          city: ev.location?.city || '',
+          country: ev.location?.country || '',
+          address: ev.location?.address || '',
+        })
+      })
       .catch(() => setError('Event not found'))
       .finally(() => setLoading(false))
   }, [id])
@@ -43,10 +52,10 @@ export default function EditEvent() {
             {error && <p style={{ color: 'var(--clr-danger)', marginBottom: 16, fontSize: 14 }}>{error}</p>}
             <form onSubmit={handleSubmit} style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 18 }}>
               {[
-                { name: 'title',    label: 'Title',       type: 'text',           col: 'full' },
-                { name: 'date',     label: 'Date & Time', type: 'datetime-local', col: '' },
-                { name: 'price',    label: 'Price ($)',   type: 'number',         col: '' },
-                { name: 'location', label: 'Location',    type: 'text',           col: 'full' },
+                { name: 'title', label: 'Title', type: 'text', col: 'full' },
+                { name: 'date', label: 'Date & Time', type: 'datetime-local', col: '' },
+                { name: 'prize', label: 'Prize ($)', type: 'number', col: '' },
+
               ].map(({ name, label, type, col }) => (
                 <div key={name} style={{ gridColumn: col === 'full' ? '1/-1' : '', display: 'flex', flexDirection: 'column', gap: 6 }}>
                   <label style={{ fontSize: 13, fontWeight: 700 }}>{label}</label>
@@ -54,6 +63,23 @@ export default function EditEvent() {
                     style={{ border: '1.5px solid var(--clr-border)', borderRadius: 10, padding: '11px 14px', fontSize: 14, outline: 'none', fontFamily: 'var(--font-body)' }} />
                 </div>
               ))}
+              <div style={{ gridColumn: '1/-1', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 18 }}>
+                {[
+                  { name: 'city', label: 'City' },
+                  { name: 'country', label: 'Country' },
+                ].map(({ name, label }) => (
+                  <div key={name} style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+                    <label style={{ fontSize: 13, fontWeight: 700 }}>{label}</label>
+                    <input name={name} type="text" value={form[name] || ''} onChange={handleChange}
+                      style={{ border: '1.5px solid var(--clr-border)', borderRadius: 10, padding: '11px 14px', fontSize: 14, outline: 'none', fontFamily: 'var(--font-body)' }} />
+                  </div>
+                ))}
+                <div style={{ gridColumn: '1/-1', display: 'flex', flexDirection: 'column', gap: 6 }}>
+                  <label style={{ fontSize: 13, fontWeight: 700 }}>Address</label>
+                  <input name="address" type="text" value={form.address || ''} onChange={handleChange}
+                    style={{ border: '1.5px solid var(--clr-border)', borderRadius: 10, padding: '11px 14px', fontSize: 14, outline: 'none', fontFamily: 'var(--font-body)' }} />
+                </div>
+              </div>
               <div style={{ gridColumn: '1/-1', display: 'flex', flexDirection: 'column', gap: 6 }}>
                 <label style={{ fontSize: 13, fontWeight: 700 }}>Category</label>
                 <select name="category" value={form.category || ''} onChange={handleChange}

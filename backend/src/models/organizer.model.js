@@ -47,6 +47,11 @@ const organizerSchema = new mongoose.Schema({
     role: {
         type: String,
         default: 'admin'
+    },
+
+    avatar: {
+        type: String,
+        default: ''
     }
 
 }, { timestamps: true });

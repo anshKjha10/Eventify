@@ -1,15 +1,21 @@
 import { useNavigate } from 'react-router-dom'
 import { ArrowLeft, MapPin, Mail, Bell, Bookmark, Settings, LogOut } from 'lucide-react'
 import { useAuth } from '../../hooks/useAuth'
-import { getInitials } from '../../utils/helpers'
+import { getInitials, getImageUrl } from '../../utils/helpers'
 
 export default function Profile() {
   const navigate         = useNavigate()
-  const { user, logout } = useAuth()
+  const { user, logout, updateProfilePhoto } = useAuth()
 
   const handleLogout = async () => {
     await logout()
     navigate('/auth/login')
+  }
+
+  const handleAvatarChange = async (e) => {
+    const file = e.target.files?.[0]
+    if (!file) return
+    await updateProfilePhoto(file)
   }
 
   return (
@@ -30,21 +36,29 @@ export default function Profile() {
 
       {/* Identity card */}
       <div style={{ background: '#fff', borderRadius: '22px 22px 0 0', marginTop: -36, padding: '0 24px 24px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6 }}>
-        {/* Avatar placeholder */}
-        <div style={{ width: 90, height: 90, borderRadius: '50%', background: 'var(--clr-border)', border: '4px solid #fff', marginTop: -45, boxShadow: '0 4px 16px rgba(0,0,0,0.12)', overflow: 'hidden' }} />
+        {/* Avatar */}
+        <div style={{ width: 90, height: 90, borderRadius: '50%', background: 'var(--clr-border)', border: '4px solid #fff', marginTop: -45, boxShadow: '0 4px 16px rgba(0,0,0,0.12)', overflow: 'hidden', display: 'grid', placeItems: 'center', position: 'relative' }}>
+          {user?.avatar
+            ? <img src={getImageUrl(user.avatar)} alt={user?.name || 'Profile'} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+            : <span style={{ fontSize: 28, fontWeight: 800, color: 'var(--clr-text)' }}>{getInitials(user?.name || 'User')}</span>
+          }
+          <label style={{ position: 'absolute', inset: 0, cursor: 'pointer' }}>
+            <input type="file" accept="image/*" onChange={handleAvatarChange} style={{ display: 'none' }} />
+          </label>
+        </div>
         <span style={{ fontSize: 20, fontWeight: 800, color: 'var(--clr-text)', marginTop: 8 }}>{user?.name || 'User'}</span>
         <span style={{ fontSize: 13, color: 'var(--clr-text-muted)' }}>{user?.email}</span>
 
         {/* Stats */}
         <div style={{ display: 'flex', alignItems: 'center', gap: 24, marginTop: 18, paddingTop: 18, borderTop: '1px solid var(--clr-border)', width: '100%', justifyContent: 'center' }}>
           {[['Events', 12], ['Following', 48], ['Followers', 120]].map(([lbl, val], i, arr) => (
-            <>
+            <div key={lbl} style={{ display: 'flex', alignItems: 'center', gap: 24 }}>
               <div key={lbl} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2 }}>
                 <span style={{ fontSize: 20, fontWeight: 800 }}>{val}</span>
                 <span style={{ fontSize: 12, color: 'var(--clr-text-muted)' }}>{lbl}</span>
               </div>
               {i < arr.length - 1 && <div style={{ width: 1, height: 36, background: 'var(--clr-border)' }} />}
-            </>
+            </div>
           ))}
         </div>
       </div>

@@ -43,6 +43,7 @@ async function registerOrganizer(req, res) {
                 _id: organizer._id,
                 name: organizer.name,
                 email: organizer.email,
+                avatar: organizer.avatar,
                 orgName: organizer.orgName,
                 role: organizer.role,
             }
@@ -83,6 +84,7 @@ async function loginOrganizer(req, res) {
                 _id: organizer._id,
                 name: organizer.name,
                 email: organizer.email,
+                avatar: organizer.avatar,
                 orgName: organizer.orgName,
                 role: organizer.role,
             }

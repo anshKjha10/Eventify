@@ -28,6 +28,11 @@ const userSchema = new mongoose.Schema({
     role: {
         type: String,
         default: 'user'
+    },
+
+    avatar: {
+        type: String,
+        default: ''
     }
 
 }, { timestamps: true });

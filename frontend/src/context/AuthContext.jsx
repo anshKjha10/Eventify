@@ -51,8 +51,19 @@ export function AuthProvider({ children }) {
     }
   }, []);
 
+  const updateProfilePhoto = useCallback(async (file) => {
+    setLoading(true);
+    try {
+      const response = await authService.updateProfilePhoto(file);
+      setUser(response.data.user);
+      return response.data;
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
   return (
-    <AuthContext.Provider value={{ user, loading, login, register, registerOrganizer, logout }}>
+    <AuthContext.Provider value={{ user, loading, login, register, registerOrganizer, logout, updateProfilePhoto }}>
       {children}
     </AuthContext.Provider>
   )

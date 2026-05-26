@@ -1,3 +1,4 @@
+import { API_ORIGIN } from './constants'
 /**
  * Format an ISO date string into a human-readable date.
  * @param {string} dateStr
@@ -37,6 +38,30 @@ export const formatPrice = (price) => {
  */
 export const truncate = (str = '', n = 40) =>
   str.length > n ? str.slice(0, n) + '…' : str
+
+/**
+ * Build a full image URL from an API-relative path.
+ * @param {string} path
+ * @returns {string}
+ */
+export const getImageUrl = (path = '') => {
+  if (!path) return ''
+  if (/^https?:\/\//i.test(path)) return path
+  if (/^data:/i.test(path)) return path
+  return path.startsWith('/') ? `${API_ORIGIN}${path}` : `${API_ORIGIN}/${path}`
+}
+
+/**
+ * Format a location that may be an object or string.
+ * @param {object|string} location
+ * @returns {string}
+ */
+export const formatLocation = (location) => {
+  if (!location) return 'TBA'
+  if (typeof location === 'string') return location
+  const parts = [location.city, location.address, location.country].filter(Boolean)
+  return parts.length > 0 ? parts.join(', ') : 'TBA'
+}
 
 /**
  * Get initials from a full name.

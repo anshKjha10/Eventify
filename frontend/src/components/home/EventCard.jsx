@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom'
 import { MapPin, Bookmark } from 'lucide-react'
-import { formatDate, truncate } from '../../utils/helpers'
+import { formatDate, formatLocation, getImageUrl, truncate } from '../../utils/helpers'
 
 /**
  * EventCard — a single event card.
@@ -39,7 +39,7 @@ export default function EventCard({ event = {}, colorClass = 'card-peach' }) {
       {/* Banner image — empty until user adds one */}
       <div className="card-art">
         {image && (
-          <img src={image} alt={title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+          <img src={getImageUrl(image)} alt={title} style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'top' }} />
         )}
       </div>
 
@@ -59,7 +59,7 @@ export default function EventCard({ event = {}, colorClass = 'card-peach' }) {
         </div>
         <div className="meta">
           <MapPin size={12} color="#8b90a5" />
-          <span>{truncate(location || 'TBA', 24)}</span>
+          <span>{truncate(formatLocation(location), 24)}</span>
         </div>
       </div>
     </article>
