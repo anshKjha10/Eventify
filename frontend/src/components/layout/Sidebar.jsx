@@ -3,6 +3,7 @@ import {
   X, User, MessageCircle, Bookmark, Mail, Settings, LogOut
 } from 'lucide-react'
 import { useAuth } from '../../hooks/useAuth'
+import { getInitials, getImageUrl } from '../../utils/helpers'
 
 /**
  * Sidebar drawer that slides in from the left.
@@ -48,7 +49,20 @@ export default function Sidebar({ open, onClose }) {
 
         {/* Profile */}
         <div className="drawer-profile">
-          <div className="drawer-avatar-wrap" />
+          <div className="drawer-avatar-wrap" style={{ display: 'grid', placeItems: 'center' }}>
+            {user?.avatar
+              ? (
+                <img
+                  src={getImageUrl(user.avatar)}
+                  alt={user?.name || 'Profile'}
+                  style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                />
+              ) : (
+                <span style={{ fontSize: 20, fontWeight: 800, color: '#2c2c44' }}>
+                  {getInitials(user?.name || 'User')}
+                </span>
+              )}
+          </div>
           <div className="drawer-user-info">
             <span className="drawer-name">{user?.name || 'Guest'}</span>
             <span className="drawer-sub" onClick={() => go('/profile')}>View Profile</span>
