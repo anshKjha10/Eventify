@@ -7,7 +7,7 @@ import Modal from '../common/Modal'
 const NAV = [
   { icon: Compass,  label: 'Explore', path: '/' },
   { icon: Calendar, label: 'Events',  path: '/events' },
-  { icon: null,     label: '',        path: null }, // FAB placeholder
+  { icon: null,     label: '',        path: null }, 
   { icon: Map,      label: 'Map',     path: '/map' },
   { icon: User,     label: 'Profile', path: '/profile' },
 ]

@@ -1,36 +1,32 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import ProtectedRoute from '../components/common/ProtectedRoute'
 
-import Login    from '../pages/auth/Login'
+import Login from '../pages/auth/Login'
 import Register from '../pages/auth/Register'
 
-// User
-import Home             from '../pages/user/Home'
-import EventDetails     from '../pages/user/EventDetails'
-import MyRegistrations  from '../pages/user/MyRegistrations'
-import Profile          from '../pages/user/Profile'
+import Home from '../pages/user/Home'
+import EventDetails from '../pages/user/EventDetails'
+import MyRegistrations from '../pages/user/MyRegistrations'
+import Profile from '../pages/user/Profile'
+import AllEvents from '../pages/user/AllEvents'
 
-// Admin
 import AdminDashboard from '../pages/admin/Dashboard'
-import ManageEvents   from '../pages/admin/ManageEvents'
-import CreateEvent    from '../pages/admin/CreateEvent'
-import EditEvent      from '../pages/admin/EditEvent'
-import Participants   from '../pages/admin/Participants'
+import ManageEvents from '../pages/admin/ManageEvents'
+import CreateEvent from '../pages/admin/CreateEvent'
+import EditEvent from '../pages/admin/EditEvent'
+import Participants from '../pages/admin/Participants'
 
-// Shared
-import NotFound     from '../pages/shared/NotFound'
+import NotFound from '../pages/shared/NotFound'
 import Unauthorized from '../pages/shared/Unauthorized'
 
 export default function AppRoutes() {
   return (
     <BrowserRouter>
       <Routes>
-        {/* Auth */}
         <Route path="/auth/login"    element={<Login />} />
         <Route path="/auth/register" element={<Register />} />
         <Route path="/unauthorized"  element={<Unauthorized />} />
 
-        {/* User (protected) */}
         <Route
           path="/"
           element={
@@ -64,7 +60,15 @@ export default function AppRoutes() {
           }
         />
 
-        {/* Admin (protected) */}
+        <Route
+          path="/events"
+          element={
+            <ProtectedRoute redirectTo="/auth/register">
+              <AllEvents />
+            </ProtectedRoute>
+          }
+        />
+
         <Route
           path="/admin/dashboard"
           element={
@@ -106,7 +110,6 @@ export default function AppRoutes() {
           }
         />
 
-        {/* Catch-all */}
         <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>
