@@ -8,9 +8,11 @@ const organizerRoutes = require("./routes/organizer.routes");
 const cors = require("cors");
 const app = express();
 
+const allowedOrigin = process.env.CLIENT_ORIGIN || 'http://localhost:5173';
+
 app.use(cors({
-    origin: 'http://localhost:5173', // frontend URL
-    credentials: true    // allows cookies to be sent
+    origin: allowedOrigin, // frontend URL
+    credentials: true      // allows cookies to be sent
 }));
 
 app.use(express.json());  // body parser middleware
