@@ -11,7 +11,18 @@ export default function Home() {
   const [category, setCategory] = useState(null)
   const [upcomingEvents, setUpcomingEvents] = useState([])
   const [nearbyEvents, setNearbyEvents] = useState([])
+  const [userCity, setUserCity] = useState('')
   const [loading, setLoading] = useState(true)
+
+  const normalizeCity = (value = '') =>
+    value.toString().trim().toLowerCase().replace(/[^a-z0-9\s]/g, '')
+
+  const getEventCity = (event) => {
+    const { location } = event || {}
+    if (!location) return ''
+    if (typeof location === 'string') return location.split(',')[0]
+    return location.city || ''
+  }
 
   useEffect(() => {
     const fetchEvents = async () => {
@@ -24,7 +35,13 @@ export default function Home() {
           .sort((a,b) => new Date(a.date) - new Date(b.date))
 
           setUpcomingEvents(upcoming)
-          setNearbyEvents(upcoming)
+          if (userCity) {
+            const userCityKey = normalizeCity(userCity)
+            const nearby = upcoming.filter((ev) => normalizeCity(getEventCity(ev)) === userCityKey)
+            setNearbyEvents(nearby)
+          } else {
+            setNearbyEvents([])
+          }
       } catch(err) {
         console.error('Failed to fetch events:', err)
       } finally {
@@ -33,11 +50,11 @@ export default function Home() {
     }
 
     fetchEvents()
-  }, [])
+  }, [userCity])
 
   return (
     <div className="app">
-      <HeroSection selectedCategory={category} onCategoryChange={setCategory} />
+      <HeroSection selectedCategory={category} onCategoryChange={setCategory} onCityChange={setUserCity} />
 
       <main className="content">
         <UpcomingEvents events={upcomingEvents} loading={loading} />

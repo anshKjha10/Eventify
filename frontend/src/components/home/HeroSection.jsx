@@ -4,11 +4,8 @@ import Sidebar      from '../layout/Sidebar'
 import SearchBar    from './SearchBar'
 import CategoryTabs from './CategoryTabs'
 
-/**
- * HeroSection — the full purple hero: topbar + search + category chips.
- * Props: onCategoryChange, selectedCategory
- */
-export default function HeroSection({ onCategoryChange, selectedCategory }) {
+
+export default function HeroSection({ onCategoryChange, selectedCategory, onCityChange }) {
   const [sidebarOpen, setSidebarOpen] = useState(false)
 
   return (
@@ -16,7 +13,7 @@ export default function HeroSection({ onCategoryChange, selectedCategory }) {
       <Sidebar open={sidebarOpen} onClose={() => setSidebarOpen(false)} />
 
       <header className="hero">
-        <MobileNavbar onMenuClick={() => setSidebarOpen(true)} />
+        <MobileNavbar onMenuClick={() => setSidebarOpen(true)} onCityChange={onCityChange} />
         <SearchBar />
         <CategoryTabs selected={selectedCategory} onChange={onCategoryChange} />
       </header>

@@ -1,13 +1,4 @@
-/**
- * Reusable Button component
- *
- * Props:
- *  variant  — 'primary' | 'secondary' | 'danger' | 'ghost'
- *  size     — 'sm' | 'md' | 'lg'
- *  fullWidth — boolean
- *  loading  — boolean
- *  ...rest  — any native button props
- */
+
 export default function Button({
   children,
   variant  = 'primary',

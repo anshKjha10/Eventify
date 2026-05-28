@@ -2,9 +2,9 @@ import { Menu, Bell, ChevronDown } from 'lucide-react'
 import { useEffect, useState } from 'react';
 /**
  * MobileNavbar — top bar inside the hero header.
- * Props: onMenuClick, city
+ * Props: onMenuClick, onCityChange
  */
-export default function MobileNavbar({ onMenuClick}) {
+export default function MobileNavbar({ onMenuClick, onCityChange }) {
 
   const [city, setCity] = useState("Detecting location...");
 
@@ -28,9 +28,11 @@ export default function MobileNavbar({ onMenuClick}) {
           const country = data.address.country || "";
 
           setCity(`${cityName}, ${country}`);
+          onCityChange?.(cityName);
 
         } catch (err) {
           setCity("Error detecting location");
+          onCityChange?.('');
         }
       }
     );

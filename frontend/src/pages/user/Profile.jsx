@@ -37,9 +37,9 @@ export default function Profile() {
       {/* Identity card */}
       <div style={{ background: '#fff', borderRadius: '22px 22px 0 0', marginTop: -36, padding: '0 24px 24px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6 }}>
         {/* Avatar */}
-        <div style={{ width: 90, height: 90, borderRadius: '50%', background: 'var(--clr-border)', border: '4px solid #fff', marginTop: -45, boxShadow: '0 4px 16px rgba(0,0,0,0.12)', overflow: 'hidden', display: 'grid', placeItems: 'center', position: 'relative' }}>
+        <div style={{ width: 100, height: 100, borderRadius: '50%', background: '#f4f5f9', border: '4px solid #fff', marginTop: -50, boxShadow: '0 4px 16px rgba(0,0,0,0.12)', overflow: 'hidden', display: 'grid', placeItems: 'center', position: 'relative' }}>
           {user?.avatar
-            ? <img src={getImageUrl(user.avatar)} alt={user?.name || 'Profile'} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+            ? <img src={getImageUrl(user.avatar)} alt={user?.name || 'Profile'} style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center' }} />
             : <span style={{ fontSize: 28, fontWeight: 800, color: 'var(--clr-text)' }}>{getInitials(user?.name || 'User')}</span>
           }
           <label style={{ position: 'absolute', inset: 0, cursor: 'pointer' }}>
