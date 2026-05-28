@@ -39,7 +39,7 @@ export default function EventCard({ event = {}, colorClass = 'card-peach' }) {
       {/* Banner image — empty until user adds one */}
       <div className="card-art">
         {image && (
-          <img src={getImageUrl(image)} alt={title} style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'top' }} />
+          <img className="card-art-img" src={getImageUrl(image)} alt={title} />
         )}
       </div>
 
