@@ -2,10 +2,7 @@ import { useNavigate } from 'react-router-dom'
 import { MapPin, Bookmark } from 'lucide-react'
 import { formatDate, formatLocation, getImageUrl, truncate } from '../../utils/helpers'
 
-/**
- * EventCard — a single event card.
- * Props: event, colorClass
- */
+
 export default function EventCard({ event = {}, colorClass = 'card-peach' }) {
   const navigate = useNavigate()
   const {

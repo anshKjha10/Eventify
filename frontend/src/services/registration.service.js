@@ -1,9 +1,8 @@
-// Registration service — stubbed (no backend connection)
-// Replace with real API calls when backend is ready
+import axiosInstance from './axios';
 
 export const registrationService = {
-  register:           async (eventId)        => ({ data: {} }),
-  cancel:             async (registrationId) => ({ data: {} }),
-  getMyRegistrations: async ()               => ({ data: { registrations: [] } }),
-  getParticipants:    async (eventId)        => ({ data: { registrations: [] } }),
+  register:           (eventId) => axiosInstance.post(`/registration/${eventId}`),
+  cancel:             (eventId) => axiosInstance.delete(`/registration/${eventId}`),
+  getMyRegistrations: ()        => axiosInstance.get('/registration/my-registrations'),
+  getParticipants:    (eventId) => axiosInstance.get(`/registration/${eventId}/participants`),
 }
