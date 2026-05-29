@@ -2,6 +2,7 @@ const userModel = require('../models/user.model');
 const organizerModel = require('../models/organizer.model');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const { uploadMulterFile } = require('../services/storage.service');
 
 async function registerUser(req, res) {
     try {
@@ -154,7 +155,12 @@ async function updateProfilePhoto(req, res) {
             return res.status(400).json({ message: "Profile image is required." });
         }
 
-        const avatarPath = `/uploads/${req.file.filename}`;
+        const uploadResult = await uploadMulterFile(req.file, { folder: "avatars" });
+        if (!uploadResult) {
+            return res.status(500).json({ message: "Failed to upload profile image." });
+        }
+
+        const avatarPath = uploadResult.url;
         const isOrganizer = req.user.role === 'admin';
         const model = isOrganizer ? organizerModel : userModel;
 

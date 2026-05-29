@@ -1,6 +1,7 @@
 const eventModel = require('../models/event.model');
+const { uploadMulterFile } = require('../services/storage.service');
 
-// create event -> ADMIN only
+
 async function createEvent(req, res){
     try{
         const { title, description, category, date, location, prize, maxSeats } = req.body || {};
@@ -26,12 +27,13 @@ async function createEvent(req, res){
             });
         }
 
-        // check admin
         if(req.user.role !== "admin"){
             return res.status(403).json({
                 message: "Only admin can create events!"
             })
         }
+
+        const uploadResult = await uploadMulterFile(req.file, { folder: "events" });
 
         const event = new eventModel({
             title,
@@ -42,7 +44,7 @@ async function createEvent(req, res){
             prize,
             maxSeats,
             availableSeats: maxSeats,
-            image: req.file ? `/uploads/${req.file.filename}` : undefined,
+            image: uploadResult ? uploadResult.url : undefined,
             createdBy: req.user.id
         });
 
@@ -157,7 +159,10 @@ async function updateEvent(req, res){
         }
 
         if (req.file) {
-            updateOps.$set.image = `/uploads/${req.file.filename}`;
+            const uploadResult = await uploadMulterFile(req.file, { folder: "events" });
+            if (uploadResult) {
+                updateOps.$set.image = uploadResult.url;
+            }
         }
 
         if (Object.keys(updateOps.$set).length === 0) {
