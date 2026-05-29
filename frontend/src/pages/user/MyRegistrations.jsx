@@ -6,7 +6,6 @@ import Loader from '../../components/common/Loader'
 export default function MyRegistrations() {
   const navigate = useNavigate()
 
-  // TODO: fetch from registrationService.getMyRegistrations()
   const registrations = []
   const loading = false
 

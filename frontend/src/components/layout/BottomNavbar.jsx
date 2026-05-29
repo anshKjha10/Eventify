@@ -1,6 +1,6 @@
 import { useContext, useState } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
-import { Compass, Calendar, Map, User, Plus, ShieldAlert } from 'lucide-react'
+import { Compass, Calendar, Ticket, User, Plus, ShieldAlert } from 'lucide-react'
 import { AuthContext } from '../../context/AuthContext'
 import Modal from '../common/Modal'
 
@@ -8,7 +8,7 @@ const NAV = [
   { icon: Compass,  label: 'Explore', path: '/' },
   { icon: Calendar, label: 'Events',  path: '/events' },
   { icon: null,     label: '',        path: null }, 
-  { icon: Map,      label: 'Map',     path: '/map' },
+  { icon: Ticket,   label: 'My Tickets', path: '/my-registrations' },
   { icon: User,     label: 'Profile', path: '/profile' },
 ]
 

@@ -8,17 +8,25 @@ const organizerRoutes = require("./routes/organizer.routes");
 const cors = require("cors");
 const app = express();
 
-const allowedOrigin = process.env.CLIENT_ORIGIN || 'http://localhost:5173';
+const allowedOrigins = (process.env.CLIENT_ORIGIN || 'http://localhost:5173')
+    .split(',')
+    .map((origin) => origin.trim())
+    .filter(Boolean);
 
 app.use(cors({
-    origin: allowedOrigin, // frontend URL
-    credentials: true      // allows cookies to be sent
+    origin: (origin, callback) => {
+        if (!origin || allowedOrigins.includes(origin)) {
+            return callback(null, true);
+        }
+
+        return callback(new Error('Not allowed by CORS'));
+    },
+    credentials: true // allows cookies to be sent
 }));
 
 app.use(express.json());  // body parser middleware
 app.use(cookieParser());  // cookie parser middleware
 
-// Serve uploaded images as static files → accessible at /uploads/<filename>
 app.use('/uploads', express.static(path.join(__dirname, '..', 'uploads')));
 
 app.get("/", (req, res) => {

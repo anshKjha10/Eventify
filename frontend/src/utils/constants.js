@@ -15,6 +15,6 @@ export const EVENT_CATEGORIES = ['All', 'Sports', 'Music', 'Food & Drink', 'Tech
 export const NAV_LINKS = [
   { label: 'Explore',  path: '/' },
   { label: 'Events',   path: '/events' },
-  { label: 'Map',      path: '/map' },
+  { label: 'My Tickets', path: '/my-registrations' },
   { label: 'Profile',  path: '/profile' },
 ]
