@@ -1,5 +1,5 @@
 const fs = require("fs/promises");
-const ImageKit = require("@imagekit/nodejs");
+const ImageKit = require("imagekit");
 
 const imagekit = new ImageKit({
     publicKey: process.env.IMAGEKIT_PUBLIC_KEY,
