@@ -97,17 +97,18 @@ export default function Login() {
           display: grid;
           place-items: center;
           background: linear-gradient(135deg, hsl(247,72%,44%) 0%, hsl(247,72%,30%) 100%);
-          padding: 24px;
+          padding: 20px 16px;
         }
         .auth-card {
           background: #fff;
           border-radius: 28px;
-          padding: 40px 36px;
+          padding: 36px 28px;
           width: 100%;
-          max-width: 400px;
+          max-width: 420px;
           box-shadow: 0 24px 64px rgba(0,0,0,0.18);
+          box-sizing: border-box;
         }
-        .auth-brand { text-align: center; margin-bottom: 32px; }
+        .auth-brand { text-align: center; margin-bottom: 28px; }
         .auth-logo {
           font-size: 26px;
           font-weight: 800;
@@ -115,16 +116,16 @@ export default function Login() {
           letter-spacing: -0.5px;
         }
         .auth-tagline { font-size: 13px; color: var(--clr-text-muted); margin-top: 4px; }
-        .auth-title { font-size: 22px; font-weight: 800; color: var(--clr-text); }
-        .auth-sub { font-size: 14px; color: var(--clr-text-muted); margin-top: 4px; margin-bottom: 28px; }
-        .auth-form { display: flex; flex-direction: column; gap: 14px; }
+        .auth-title { font-size: 22px; font-weight: 800; color: var(--clr-text); margin: 0; }
+        .auth-sub { font-size: 14px; color: var(--clr-text-muted); margin-top: 4px; margin-bottom: 24px; }
+        .auth-form { display: flex; flex-direction: column; gap: 12px; }
         .auth-field {
           display: flex;
           align-items: center;
           gap: 12px;
           border: 1.5px solid var(--clr-border);
           border-radius: var(--radius-md);
-          padding: 13px 16px;
+          padding: 12px 14px;
           background: #fafafa;
           transition: border-color 0.2s;
         }
@@ -136,8 +137,9 @@ export default function Login() {
           background: transparent;
           font-size: 15px;
           color: var(--clr-text);
+          min-width: 0;
         }
-        .eye-btn { background: none; border: none; padding: 0; display: grid; place-items: center; }
+        .eye-btn { background: none; border: none; padding: 0; display: grid; place-items: center; cursor: pointer; flex-shrink: 0; }
         .auth-forgot {
           font-size: 13px;
           font-weight: 600;
@@ -156,10 +158,17 @@ export default function Login() {
           font-weight: 700;
           letter-spacing: 0.3px;
           transition: opacity 0.2s, transform 0.15s;
+          width: 100%;
+          cursor: pointer;
         }
         .auth-submit-btn:hover { opacity: 0.92; transform: translateY(-1px); }
-        .auth-switch { text-align: center; font-size: 14px; color: var(--clr-text-muted); margin-top: 24px; }
+        .auth-switch { text-align: center; font-size: 14px; color: var(--clr-text-muted); margin-top: 20px; }
         .auth-switch a { color: var(--clr-primary); font-weight: 700; }
+        @media (max-width: 400px) {
+          .auth-page { padding: 16px 12px; }
+          .auth-card { padding: 28px 20px; border-radius: 22px; }
+          .auth-title { font-size: 20px; }
+        }
       `}</style>
     </div>
   )
