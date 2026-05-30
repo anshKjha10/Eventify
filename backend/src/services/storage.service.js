@@ -22,12 +22,17 @@ async function uploadMulterFile(file, options = {}) {
         return null;
     }
 
-    const fileBuffer = await fs.readFile(file.path);
-    const result = await uploadFile(fileBuffer, file.filename, options);
+    const fileBuffer = file.buffer
+        ? file.buffer
+        : await fs.readFile(file.path);
+    const fileName = file.filename || file.originalname || `upload-${Date.now()}`;
+    const result = await uploadFile(fileBuffer, fileName, options);
 
-    await fs.unlink(file.path).catch(() => {
-        // Best-effort cleanup if the temp file was already removed.
-    });
+    if (file.path) {
+        await fs.unlink(file.path).catch(() => {
+            // Best-effort cleanup if the temp file was already removed.
+        });
+    }
 
     return result;
 }

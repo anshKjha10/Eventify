@@ -4,6 +4,13 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const { uploadMulterFile } = require('../services/storage.service');
 
+const isProd = process.env.NODE_ENV === 'production';
+const cookieOptions = {
+    httpOnly: true,
+    sameSite: isProd ? 'none' : 'lax',
+    secure: isProd
+};
+
 async function registerUser(req, res) {
     try {
         const { name, email, password, phoneNumber } = req.body || {};
@@ -41,7 +48,7 @@ async function registerUser(req, res) {
             process.env.JWT_SECRET
         );
 
-        res.cookie('token', token);
+        res.cookie('token', token, cookieOptions);
 
         return res.status(201).json({
             message: "User registered successfully",
@@ -114,7 +121,7 @@ async function loginUser(req, res) {
             role: account.role
         }, process.env.JWT_SECRET);
 
-        res.cookie("token", token);
+        res.cookie("token", token, cookieOptions);
 
         return res.status(200).json({
             message: `${isOrganizer ? 'Organizer' : 'User'} logged in successfully`,
@@ -141,7 +148,7 @@ async function loginUser(req, res) {
 
 function logoutUser(req, res) {
 
-    res.clearCookie("token");
+    res.clearCookie("token", cookieOptions);
 
     return res.status(200).json({
         message: "User logged out successfully"
