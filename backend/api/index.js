@@ -2,6 +2,8 @@ require('dotenv').config();
 const app = require('../src/app');
 const connectDB = require('../src/db/db');
 
-connectDB();
-
-module.exports = app;
+// Vercel serverless: wrap app to ensure DB is connected before each request
+module.exports = async (req, res) => {
+    await connectDB();
+    return app(req, res);
+};
